@@ -1,0 +1,227 @@
+.playerWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+.player {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: block;
+}
+
+/* — Placeholder when no channel selected — */
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--color-fg-dim);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  background:
+    radial-gradient(60% 60% at 50% 50%, rgba(var(--accent-rgb), 0.04) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.018) 0 1px,
+      transparent 1px 4px
+    ),
+    #050608;
+}
+
+.placeholder::before {
+  content: "NO SIGNAL";
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+  animation: var(--animate-flicker);
+}
+
+/* — Loading overlay — */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background:
+    radial-gradient(60% 70% at 50% 45%, rgba(20, 23, 28, 0.88) 0%, rgba(7, 8, 10, 0.95) 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Channel logo as a hero element while we wait for the manifest. Uses the
+   filter glow as a subtle "loading" pulse so the spinner isn't the only
+   feedback the user gets. */
+.overlayLogo {
+  max-width: 180px;
+  max-height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 24px rgba(var(--accent-rgb), 0.35));
+  animation: overlayPulse 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes overlayPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(0.96); }
+}
+
+.overlayPhase {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+  margin: 0;
+}
+
+/* Subtle indicator dot below the phase text. The spinner is gone — the
+   pulsing logo carries the activity signal without being a "Cargando…"
+   ring on top of the artwork. */
+.overlayPhase::before {
+  content: "●";
+  margin-right: 8px;
+  color: var(--color-accent);
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.2; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* — Error overlay — */
+.errorOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(ellipse at center, rgba(7, 8, 10, 0.78) 0%, rgba(7, 8, 10, 0.96) 70%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.18) 0 1px,
+      transparent 1px 3px
+    );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 12;
+}
+
+.errorPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  max-width: 480px;
+  padding: 22px 24px;
+  background: rgba(13, 15, 18, 0.72);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+}
+
+.errorBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-amber-glow);
+  background: rgba(255, 77, 46, 0.1);
+  border: 1px solid rgba(255, 77, 46, 0.35);
+  border-radius: 1px;
+}
+
+.errorTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin: 0;
+  line-height: 0.95;
+}
+
+.errorMsg {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--color-fg-dim);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.errorActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.errorBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--color-fg-dim);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.errorBtn:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg-dim);
+  background: var(--color-surface);
+}
+
+.errorBtnPrimary {
+  background: var(--color-accent);
+  color: var(--color-ink);
+  border-color: var(--color-accent);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.errorBtnPrimary:hover {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent-dim);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* — Cast button — */
+.controls {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 15;
+}

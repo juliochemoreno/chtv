@@ -1,0 +1,400 @@
+.page {
+  min-height: calc(100vh - var(--shell-top-h, 28px));
+  padding: 0 28px 56px;
+  background: var(--color-ink);
+  color: var(--color-fg);
+}
+
+/* — Sticky top region — header + filters move together as a single block,
+   same pattern as /events. */
+.stickyTop {
+  position: sticky;
+  top: var(--shell-top-h, 28px);
+  z-index: 50;
+  margin: 0 -28px 18px;
+  padding: 22px 28px 12px;
+  background: var(--color-ink);
+  border-bottom: 1px solid var(--color-line-soft);
+  box-shadow: 0 10px 20px -12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 720px) {
+  .stickyTop { margin: 0 -14px 14px; padding: 16px 14px 10px; }
+}
+
+.header {
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin: 0;
+  line-height: 0.95;
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-fg-dim);
+  line-height: 1.4;
+  margin: 6px 0 0;
+  max-width: 56ch;
+}
+
+/* — Stats block (right side of header — mirrors the "PRÓXIMO" block of /events) */
+.statsBlock {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--color-ink-elevated);
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-line);
+  border-radius: 1px;
+  min-width: 280px;
+}
+
+.statsBlockLive {
+  border-left-color: var(--color-amber);
+  background:
+    linear-gradient(90deg, rgba(255, 77, 46, 0.08) 0%, transparent 60%),
+    var(--color-ink-elevated);
+}
+
+.statsKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+}
+
+.statsBlockLive .statsKicker { color: var(--color-amber-glow); }
+
+.statsKickerDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-fg-muted);
+}
+
+.statsKickerDotLive {
+  background: var(--color-amber);
+  animation: var(--animate-pulse-live);
+}
+
+.statsBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.statsValue {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.statsValueDim {
+  color: var(--color-fg-muted);
+  font-size: 0.85em;
+}
+
+.statsDesc {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin-top: 2px;
+}
+
+.statsBadge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  white-space: nowrap;
+  padding-left: 14px;
+  border-left: 1px solid var(--color-line);
+}
+
+@media (max-width: 900px) {
+  .header { grid-template-columns: 1fr; gap: 12px; }
+  .statsBlock { min-width: 0; }
+}
+
+/* — Compact search (sits inline with the chip row, like /events) — */
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 320px;
+  min-width: 200px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+}
+
+.searchWrap:focus-within {
+  border-color: var(--color-accent);
+  background: var(--color-surface-2);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 32px 7px 32px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  caret-color: var(--color-accent);
+}
+
+.searchInput::placeholder {
+  color: var(--color-fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.65rem;
+}
+
+.searchClear {
+  position: absolute;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  color: var(--color-fg-muted);
+  border: 0;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.searchClear:hover {
+  color: var(--color-fg);
+  background: var(--color-surface-2);
+}
+
+/* — Filters — search + chips render as siblings inside this single flex
+   container so they wrap as one row, matching the /events pattern. */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.chip:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg-muted);
+  background: var(--color-surface-2);
+}
+
+.chipOn {
+  color: var(--color-ink);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.chipOn .chipCount { color: var(--color-ink); opacity: 0.7; }
+
+.chipCount {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reset filters — inline at the right end of .filters when there's anything
+   to reset. Otherwise the chips alone fill the row. */
+.resetBtn {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-amber-glow);
+  border: 1px solid rgba(255, 77, 46, 0.3);
+  border-radius: 1px;
+  background: rgba(255, 77, 46, 0.06);
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.resetBtn:hover {
+  color: var(--color-ink);
+  background: var(--color-amber);
+  border-color: var(--color-amber);
+}
+
+/* — Virtualized grid wrapper — react-window 2.x scrolls inside this box. */
+.virtualWrap {
+  width: 100%;
+  /* Min-height keeps the page from collapsing while the grid measures itself. */
+  min-height: 320px;
+}
+
+/* — Legacy non-virtual grid (kept for reference / smaller catalogs) — */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.gridItem {
+  display: flex;
+}
+
+.gridItem > * {
+  width: 100%;
+}
+
+/* — Empty / loading / error — */
+.empty {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 32px;
+  text-align: center;
+  border: 1px dashed var(--color-line);
+  background: var(--color-ink-elevated);
+}
+
+.emptyPrefix {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-amber);
+}
+
+.empty p {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-fg-dim);
+  margin: 0;
+}
+
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--shell-top-h, 28px));
+}
+
+.errorBox {
+  max-width: 520px;
+  margin: 80px auto;
+  padding: 28px 32px;
+  border: 1px solid rgba(255, 77, 46, 0.4);
+  background: rgba(255, 77, 46, 0.05);
+}
+
+.errorPrefix {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-amber);
+}
+
+.errorTitle {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin: 0 0 6px;
+}
+
+/* — Responsive — */
+@media (max-width: 900px) {
+  .headerInner {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 540px) {
+  .page { padding: 0 14px 40px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .filters { gap: 10px; }
+}

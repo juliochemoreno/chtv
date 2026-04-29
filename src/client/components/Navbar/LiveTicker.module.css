@@ -1,0 +1,137 @@
+.tickerWrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  height: 28px;
+  background: var(--color-ink-elevated);
+  border-bottom: 1px solid var(--color-line-soft);
+  overflow: hidden;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  padding: 0 14px;
+  background: var(--color-amber);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: var(--tracking-broadcast);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  transition: background 0.2s ease;
+}
+
+.labelError {
+  background: var(--color-amber);
+}
+
+.labelDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.dotLive { background: var(--color-ink); animation: var(--animate-pulse-live); }
+.dotIdle { background: rgba(7, 8, 10, 0.5); }
+.dotError { background: var(--color-ink); animation: var(--animate-flicker); }
+.dotLoading { background: var(--color-ink); animation: var(--animate-flicker); }
+
+.track {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 32px, #000 calc(100% - 32px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 32px, #000 calc(100% - 32px), transparent 100%);
+}
+
+.lane {
+  display: inline-flex;
+  align-items: center;
+  gap: 36px;
+  height: 100%;
+  padding-left: 32px;
+  white-space: nowrap;
+  /* `--animate-ticker` resolves to `ticker 60s linear infinite` from the
+     @theme block in index.css. The inline `animationDuration` from the JSX
+     overrides the 60s default with one based on item count. */
+  animation: var(--animate-ticker);
+}
+
+.tickerWrap:hover .lane {
+  animation-play-state: paused;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+}
+
+.itemBullet {
+  font-size: 0.55rem;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.itemTime {
+  color: var(--color-accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.itemLeague {
+  color: var(--color-fg-muted);
+  letter-spacing: 0.1em;
+}
+
+.itemLeague::after {
+  content: "·";
+  margin-left: 10px;
+  color: var(--color-line);
+}
+
+.itemDesc {
+  color: var(--color-fg);
+  letter-spacing: 0.04em;
+}
+
+/* Static lane (used for empty / loading / error states) */
+.staticLane {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding-left: 32px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+}
+
+.staticDot {
+  color: var(--color-fg-muted);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.staticError {
+  color: var(--color-amber-glow);
+}
+
+.staticError .staticDot {
+  color: var(--color-amber);
+}
+

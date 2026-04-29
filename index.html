@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHTV — Live Broadcast Deck</title>
+    <meta name="description" content="CHTV — Panel de control para ver tus canales HLS en vivo, con agenda deportiva integrada.">
+    <meta name="keywords" content="HLS, M3U, live streaming, sports streaming, broadcast deck">
+
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CHTV — Live Broadcast Deck">
+    <meta property="og:description" content="Panel de control para ver tus canales HLS en vivo, con agenda deportiva integrada.">
+    <meta property="og:image" content="/logo.png">
+
+    <!-- HLS.js — reproductor HLS para navegadores que no soportan m3u8 nativo -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+
+    <!-- Google Fonts: Anton (display, broadcast headlines), Manrope (body), JetBrains Mono (timecode/stats) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/client/main.jsx"></script>
+
+    <!-- Google Cast SDK -->
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+</body>
+</html>

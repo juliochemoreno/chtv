@@ -1,0 +1,271 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-soft);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.2s ease,
+              background 0.25s ease;
+  isolation: isolate;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 2;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--color-line);
+  background: var(--color-surface-2);
+}
+
+.card:hover::before,
+.card:focus-visible::before {
+  transform: scaleY(1);
+}
+
+/* Top bar */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-line-soft);
+  background: var(--color-ink-elevated);
+}
+
+.chBadge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.chBadgeLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-fg-muted);
+}
+
+.chBadgeNum {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--color-fg);
+}
+
+.liveTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 7px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-amber-glow);
+  background: rgba(255, 77, 46, 0.1);
+  border: 1px solid rgba(255, 77, 46, 0.3);
+  border-radius: 1px;
+}
+
+.offTag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-broadcast);
+  color: var(--color-fg-muted);
+  padding: 3px 7px;
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-amber);
+  animation: var(--animate-pulse-live);
+}
+
+/* Art / logo */
+.art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 124px;
+  background:
+    radial-gradient(120% 100% at 50% 20%, rgba(var(--accent-rgb), 0.06), transparent 60%),
+    linear-gradient(180deg, var(--color-surface-2) 0%, var(--color-ink-elevated) 100%);
+  overflow: hidden;
+}
+
+.art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+  pointer-events: none;
+}
+
+.logo {
+  position: relative;
+  z-index: 1;
+  max-width: 60%;
+  max-height: 64%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.45));
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .logo { transform: scale(1.04); }
+
+.logoFallback {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-fg-dim);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* Action overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* Solid scrim (was `backdrop-filter: blur` — too expensive when painted
+     across hundreds of cards in the admin grid). */
+  background: rgba(7, 8, 10, 0.92);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card:hover .overlay,
+.card:focus-within .overlay {
+  opacity: 1;
+}
+
+.overlayBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-ink-elevated);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.overlayBtn:hover {
+  transform: scale(1.08);
+}
+
+.overlayBtnToggle:hover {
+  color: var(--color-ink);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow-accent);
+}
+
+.overlayBtnEdit:hover {
+  color: var(--color-fg);
+  background: var(--color-surface-2);
+  border-color: var(--color-fg-dim);
+}
+
+.overlayBtnDelete:hover {
+  color: var(--color-ink);
+  background: var(--color-amber);
+  border-color: var(--color-amber);
+  box-shadow: 0 0 18px -2px rgba(255, 77, 46, 0.5);
+}
+
+/* Bottom: name + meta */
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metaSlug { color: var(--color-fg-dim); }
+.metaDot { color: var(--color-line); }
+.metaCat { color: var(--color-fg-muted); }
+
+.origin {
+  display: inline-block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.originManual {
+  color: var(--color-fg-muted);
+}
+
+.originList {
+  color: var(--color-amber-glow);
+}

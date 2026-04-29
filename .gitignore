@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.wrangler/
+*.log
+.env
+.env.local
+.dev.vars
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo
+
+# Hopla planning artifacts — kept local only, never synced to the repo.
+# Only CLAUDE.md (project rules) is committed.
+.agents/
+.claude/

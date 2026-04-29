@@ -1,0 +1,289 @@
+/* ===== Tokens specific to the sidebar ===== */
+:root {
+  --sidebar-w: 64px;
+  --sidebar-w-expanded: 220px;
+  --sidebar-w-drawer: 260px;
+}
+
+/* ===== Desktop rail (compact, icon-only by default) ===== */
+.rail {
+  position: sticky;
+  top: var(--shell-top-h, 28px);
+  height: calc(100vh - var(--shell-top-h, 28px));
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--color-ink-elevated);
+  border-right: 1px solid var(--color-line-soft);
+  z-index: 40;
+  overflow: hidden;
+  transition: width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rail[data-expanded='true'] {
+  width: var(--sidebar-w-expanded);
+}
+
+/* Inner scroll if content overflows the viewport (rare on the rail) */
+.body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 14px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+.body::-webkit-scrollbar { width: 4px; }
+.body::-webkit-scrollbar-thumb { background: var(--color-line); }
+
+/* ===== Brand ===== */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px 14px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-line-soft);
+  margin-bottom: 12px;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--color-fg);
+  flex-shrink: 0;
+}
+
+.brandCh { color: var(--color-fg); }
+.brandSlash { color: var(--color-accent); margin: 0 1px; }
+.brandTv { color: var(--color-accent); }
+
+/* ===== Sections ===== */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-line-soft);
+  margin-bottom: 6px;
+}
+
+.section:last-of-type {
+  border-bottom: 0;
+}
+
+/* Admin section anchored at the bottom: divider on top, none below */
+.sectionBottom {
+  border-top: 1px solid var(--color-line-soft);
+  border-bottom: 0;
+  padding-top: 8px;
+  margin-bottom: 0;
+}
+
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  padding: 4px 14px 2px;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ===== Nav items ===== */
+.navItem,
+.footerBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  color: var(--color-fg-dim);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.navItem:hover,
+.footerBtn:hover {
+  color: var(--color-fg);
+  background: var(--color-surface);
+}
+
+.navItemActive {
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border-left-color: var(--color-accent);
+}
+
+.navIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* Desktop labels = tooltips that appear on hover next to the rail.
+   Mobile labels = inline (always visible). */
+.navLabel {
+  white-space: nowrap;
+}
+
+.navLabelOn {
+  /* Inline label (mobile drawer, expanded mode) */
+  display: inline-block;
+}
+
+.navLabelTooltip {
+  /* Tooltip: hidden by default, shown next to the icon on hover */
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-ink-elevated);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  z-index: 50;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+}
+
+.navItem:hover .navLabelTooltip,
+.footerBtn:hover .navLabelTooltip {
+  opacity: 1;
+}
+
+/* ===== Spacer + Footer ===== */
+.spacer {
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--color-line-soft);
+  margin-top: 8px;
+}
+
+/* Expand/collapse toggle: dimmer, more discreet — secondary action */
+.toggleBtn {
+  color: var(--color-fg-muted);
+}
+
+.toggleBtn:hover {
+  color: var(--color-fg);
+}
+
+/* ===== Mobile: hide rail; drawer takes over ===== */
+@media (max-width: 720px) {
+  .rail {
+    display: none;
+  }
+}
+
+/* ===== Mobile drawer ===== */
+.drawerScrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 8, 10, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 80;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-w-drawer);
+  max-width: 86vw;
+  background: var(--color-ink-elevated);
+  border-right: 1px solid var(--color-line);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 12px 0 40px -12px rgba(0, 0, 0, 0.6);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+
+.drawerKicker {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-amber);
+}
+
+.drawerClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-line);
+  border-radius: 1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.drawerClose:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg-dim);
+  background: var(--color-surface);
+}
+
+.drawer .body {
+  padding: 12px 0;
+}
+
+/* Active state: lighter background instead of border on the drawer (full width) */
+.drawer .navItem,
+.drawer .footerBtn {
+  padding-right: 16px;
+}

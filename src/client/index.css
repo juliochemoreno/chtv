@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* ============================================================
+   STADIUM BROADCAST — Design tokens (Tailwind v4 CSS-first)
+   ============================================================ */
+@theme {
+  /* — Surfaces — */
+  --color-ink: #07080a;
+  --color-ink-elevated: #0d0f12;
+  --color-surface: #14171c;
+  --color-surface-2: #1c1f26;
+  --color-surface-3: #262a32;
+  --color-line: #2a2e37;
+  --color-line-soft: #1f232a;
+
+  /* — Type — */
+  --color-fg: #f4f5f7;
+  --color-fg-dim: #9aa1ad;
+  --color-fg-muted: #5e6571;
+
+  /* — Brand & accents — */
+  --color-accent: #d4ff00;
+  --color-accent-dim: #b6db00;
+  --color-amber: #ff4d2e;
+  --color-amber-glow: #ff7a5a;
+
+  /* — Fonts — */
+  --font-display: "Anton", "Bebas Neue", Impact, sans-serif;
+  --font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* — Tracking — */
+  --tracking-broadcast: 0.18em;
+  --tracking-tight-display: -0.01em;
+
+  /* — Shadows / glow — */
+  --shadow-glow-accent: 0 0 32px -4px rgba(var(--accent-rgb), 0.45);
+  --shadow-glow-amber: 0 0 24px -2px rgba(255, 77, 46, 0.55);
+
+  /* — Animations & keyframes (must be inside @theme in Tailwind v4) — */
+  --animate-pulse-live: pulse-live 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-ticker: ticker 60s linear infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-flicker: flicker 4s linear infinite;
+
+  @keyframes pulse-live {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 46, 0.7); }
+    50%      { opacity: 0.85; transform: scale(1.08); box-shadow: 0 0 0 8px rgba(255, 77, 46, 0); }
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.55; }
+  }
+}
+
+/* ============================================================
+   Theme palettes — switched via [data-theme] on <html>
+   `--accent-rgb` is comma-separated channels for rgba() alpha.
+   Default (no data-theme attr) = GOLD.
+   ============================================================ */
+:root,
+:root[data-theme="gold"] {
+  --color-accent: #ffb000;
+  --color-accent-dim: #d99500;
+  --accent-rgb: 255, 176, 0;
+}
+
+:root[data-theme="red"] {
+  --color-accent: #e50914;
+  --color-accent-dim: #b3060f;
+  --accent-rgb: 229, 9, 20;
+}
+
+:root[data-theme="blue"] {
+  --color-accent: #1d70ff;
+  --color-accent-dim: #1657cc;
+  --accent-rgb: 29, 112, 255;
+}
+
+:root[data-theme="purple"] {
+  --color-accent: #9146ff;
+  --color-accent-dim: #7128cc;
+  --accent-rgb: 145, 70, 255;
+}
+
+/* — Hidden palettes (still selectable via localStorage / data-theme) — */
+:root[data-theme="lime"] {
+  --color-accent: #d4ff00;
+  --color-accent-dim: #b6db00;
+  --accent-rgb: 212, 255, 0;
+}
+
+:root[data-theme="cyan"] {
+  --color-accent: #00e5ff;
+  --color-accent-dim: #00b8cc;
+  --accent-rgb: 0, 229, 255;
+}
+
+:root[data-theme="magenta"] {
+  --color-accent: #ff2bd6;
+  --color-accent-dim: #cc1ba8;
+  --accent-rgb: 255, 43, 214;
+}
+
+:root[data-theme="mint"] {
+  --color-accent: #10b981;
+  --color-accent-dim: #0e9568;
+  --accent-rgb: 16, 185, 129;
+}
+
+:root[data-theme="silver"] {
+  --color-accent: #dbe2ea;
+  --color-accent-dim: #aab2bb;
+  --accent-rgb: 219, 226, 234;
+}
+
+/* ============================================================
+   Legacy aliases (kept for Admin pages still using old vars)
+   ============================================================ */
+:root {
+  --bg-primary: var(--color-ink);
+  --bg-secondary: var(--color-ink-elevated);
+  --bg-card: var(--color-surface);
+  --bg-card-hover: var(--color-surface-2);
+  --bg-navbar: var(--color-ink-elevated);
+  --text-primary: var(--color-fg);
+  --text-secondary: var(--color-fg-dim);
+  --text-muted: var(--color-fg-muted);
+  --accent: var(--color-accent);
+  --accent-hover: var(--color-accent-dim);
+  --border: var(--color-line);
+  --player-bg: #000;
+}
+
+/* ============================================================
+   Base reset
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  /* Prevent any single element with a stray box-shadow / drag transform / wide
+     decoration from triggering a horizontal scrollbar on the whole page.
+     `clip` (not `hidden`) is critical here — `overflow: hidden` would create
+     a scroll container and break `position: sticky` on the navbar / admin
+     toolbars. `clip` blocks overflow without creating that container. */
+  overflow-x: clip;
+}
+
+html { background-color: var(--color-ink); }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ink);
+  color: var(--color-fg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; font-family: inherit; background: transparent; color: inherit; }
+img { display: block; }
+
+/* ============================================================
+   Atmosphere — grain overlay (applied via .grain utility)
+   ============================================================ */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ============================================================
+   Reusable broadcast utilities
+   ============================================================ */
+.broadcast-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-broadcast);
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+}
+
+.display-headline {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight-display);
+  line-height: 0.92;
+}
+
+/* Corner-bracket frame (broadcast viewport) */
+.frame-brackets {
+  position: relative;
+}
+.frame-brackets::before,
+.frame-brackets::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-accent);
+  pointer-events: none;
+  z-index: 5;
+}
+.frame-brackets::before {
+  top: -1px; left: -1px;
+  border-right: 0; border-bottom: 0;
+}
+.frame-brackets::after {
+  bottom: -1px; right: -1px;
+  border-left: 0; border-top: 0;
+}
+
+/* Diagonal pinstripe accent */
+.pinstripe {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-accent) 0 2px,
+    transparent 2px 8px
+  );
+}
+
+/* Scoreboard glow */
+.scoreboard-glow {
+  text-shadow: 0 0 24px rgba(var(--accent-rgb), 0.35);
+}
+
+/* Hide native scrollbar */
+.scroll-hide::-webkit-scrollbar { display: none; }
+.scroll-hide { scrollbar-width: none; }
+
+/* Custom focus ring */
+:where(button, [role="button"], a, input):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
